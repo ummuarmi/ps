@@ -1,0 +1,48 @@
+<%- include ('partials/header.ejs'); -%>
+<div class="container">
+    <% if (message != '') { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+    <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="ur_id">Add By</label>
+            <select class="form-control" id="ur_id" name="ur_id">
+                <option value="1">Admin</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="text" class="form-control" name="job_title" id="job_title" placeholder="Job Title" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="job_description">Job Description / Requirements</label>
+            <textarea class="form-control" id="job_description" name="job_description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="job_location">Company Location</label>
+            <textarea class="form-control" id="job_location" name="job_location" rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="text" class="form-control" name="job_company" id="job_company" placeholder="Company Name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="job_status">Job Status</label>
+            <select class="form-control" id="job_status" name="job_status">
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="player-img">Company Logo</label><br>
+                <input type="file" name="image" id="player-img" class="" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary float-right">Add Job</button>
+    </form>
+</div>
+<%- include ('partials/footer.ejs'); -%>

@@ -1,0 +1,96 @@
+stages:
+  - install
+  - decrypt
+  - test
+  - quality_gate
+  - deploy_staging
+  - deploy_production
+
+Install:
+  image: gcr.io/cloud-builders/npm
+  stage: install
+  script: npm install
+  artifacts:
+    name: $CI_PIPELINE_IID
+    paths:
+      - node_modules/
+  only:
+    refs:
+      - merge_request
+
+Decrypt:
+  image: gcr.io/cloud-builders/gcloud
+  stage: decrypt
+  script:
+    - echo $KMS_SERVICE_ACCOUNT > $CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file $CI_PIPELINE_ID.json
+    - ./decrypt.sh
+    - rm $CI_PIPELINE_ID.json
+  artifacts:
+    name: $CI_PIPELINE_IID
+    paths:
+      - credentials/
+      - config/
+  only:
+    refs:
+      - merge_request
+      - master
+
+Unit Test:
+  image: gcr.io/cloud-builders/npm
+  stage: test
+  script: npm run coverage
+  allow_failure: true
+  artifacts:
+    name: $CI_PIPELINE_IID
+    paths:
+      - coverage/lcov.info
+  dependencies:
+    - Install
+    - Decrypt
+  only:
+    refs:
+      - merge_request
+
+sonarqube scan:
+  image:
+    name: sonarsource/sonar-scanner-cli:4.6
+    entrypoint: [""]
+  stage: quality_gate
+  script:
+    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey=${CI_PROJECT_NAME} -Dsonar.exclusions=node_modules/**,test/**,views/**,config/**
+  allow_failure: true
+  only:
+    refs:
+      - master
+
+Deploy to Staging:
+  image: gcr.io/cloud-builders/gcloud
+  stage: deploy_staging
+  script:
+    - echo $GCP_SERVICE_ACCOUNT_STG > $CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file $CI_PIPELINE_ID.json
+    - gcloud app deploy $APP_YAML_NAME_STG --version=$CI_PIPELINE_ID --quiet --project=$GCP_PROJECT_ID_STG
+  dependencies:
+    - Install
+    - Decrypt
+    - sonarqube scan
+  when: manual
+  only:
+    refs:
+      - merge_request
+
+deploy_production:
+  image: gcr.io/cloud-builders/gcloud
+  stage: deploy_production
+  script:
+    - echo $GCP_SERVICE_ACCOUNT_PROD > $CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file $CI_PIPELINE_ID.json
+    - gcloud app deploy $APP_YAML_NAME_PROD --version=$CI_PIPELINE_ID --quiet --project=$GCP_PROJECT_ID_PROD --no-promote
+  dependencies:
+    - Install
+    - Decrypt
+  when: manual
+  only:
+    refs:
+      - master

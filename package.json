@@ -1,0 +1,49 @@
+{
+  "name": "ps",
+  "version": "1.0.0",
+  "dependencies": {
+    "async": "1.4.0",
+    "body-parser": "^1.19.1",
+    "bufferutil": "^4.0.1",
+    "canvas": "^2.5.0",
+    "config": "~3.3.7",
+    "cookie-parser": "^1.4.5",
+    "cors": "2.7.1",
+    "ejs": "^3.1.8",
+    "encoding": "^0.1.0",
+    "express": "~4.16.0",
+    "express-fileupload": "^1.2.0",
+    "google-spreadsheet": "^3.3.0",
+    "googleapis": "^64.0.0",
+    "helmet": "^4.5.0",
+    "hsts": "^2.2.0",
+    "jquery": "^3.6.0",
+    "jsdom": "19.0.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.27.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.19",
+    "redis": "^4.2.0",
+    "req-flash": "0.0.3",
+    "request": "^2.88.2",
+    "swagger-ui-express": "^4.1.5",
+    "utf-8-validate": "^5.0.2",
+    "validator": "^13.7.0",
+    "winston": "^3.2.1",
+    "x-xss-protection": "^2.0.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
+  },
+  "engines": {
+    "node": "10.x.x"
+  },
+  "description": "ava-widget for integration",
+  "scripts": {
+    "start": "node ./start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ummu habibah fadzim",
+  "license": "ISC"
+}

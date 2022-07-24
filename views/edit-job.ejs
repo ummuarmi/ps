@@ -1,0 +1,55 @@
+<%- include ('partials/header.ejs'); -%>
+<div class="container">
+    <% if (message) { %>
+<p class="text-center text-danger"><%= message %></p>
+        <% } %>
+
+<% if (job) { %>
+<form class="add-player-form" action="" method="post" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="ur_id">Add By</label>
+            <input type="text" class="form-control" name="ur_id" id="ur_id" value="<%= job.ur_id %>" required disabled title="Add By cannot be edited.">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="job_title">Job Title</label>
+            <input type="text" class="form-control" name="job_title" id="job_title" value="<%= job.job_title %>" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="job_description">job_description</label>
+            <textarea class="form-control" id="job_description" name="job_description" rows="3"><%= job.job_description %></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="job_location">Company Location</label>
+            <textarea class="form-control" id="job_location" name="job_location" rows="3"><%= job.job_location %></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="job_location">Company Name</label>
+            <textarea class="form-control" id="job_company" name="job_company" rows="3"><%= job.job_company %></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="number">Job Status</label>
+            <select class="form-control" id="job_status" name="job_status">
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success float-right">Update Job Vacancy</button>
+    </form>
+    <% } else { %>
+<p class="text-center">Jobs Not Found. Go <a href="/recruiter/add">HERE</a> to add Job Vacany.</p>
+    <% } %>
+</div>
+<%- include ('partials/footer.ejs'); -%>
